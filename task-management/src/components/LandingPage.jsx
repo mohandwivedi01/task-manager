@@ -19,7 +19,6 @@ const LandingPage = () => {
   };
 
   const handleCalendarToggle = () => {
-      // setAddTask(false)
       setShowCalendar(!showCalendar);
   };
 
@@ -27,8 +26,6 @@ const LandingPage = () => {
     setAddTask(false)
     setShowAssignModal(true);
   };
-
-
 
   return (
     <div className="bg-white min-h-screen px-5 mt-10 mb-16">
@@ -55,12 +52,14 @@ const LandingPage = () => {
           <SummaryCard 
             icon={<FaClipboardList className="text-orange-100 bg-orange-500 h-12 w-12 p-3 rounded-full" />} 
             title={"All Active Tasks"} count={7} 
-            />
+          />
           <SummaryCard 
-            icon={<FaCheckCircle className="text-blue-100 bg-blue-500 h-12 w-12 p-3 rounded-full" />} title={"Completed Tasks"} count="2/7" />
+            icon={<FaCheckCircle className="text-blue-100 bg-blue-500 h-12 w-12 p-3 rounded-full" />} title={"Completed Tasks"} count="2/7" 
+          />
           <button onClick={() => setAddTask(true)} className="bg-black py-3 rounded-2xl shadow-md text-sm text-gray-200">+ Add Task</button>
         </div>
 
+        {/* Modals */}
         {addTask && <AddTask 
                       addTask={addTask} 
                       setAddTask={setAddTask} 
@@ -72,14 +71,12 @@ const LandingPage = () => {
                       handleDateSelect={handleDateSelect} 
                       setShowCalendar={setShowCalendar}
                       setShowAssignModal={setShowAssignModal}
-
                     />}
         {showAssignModal && <AssignedSuccessModal
                       setShowAssignModal={setShowAssignModal}
-
                     />}
 
-        {/* Kanban Board */}
+        {/* Columns */}
         <div className="flex-grow grid grid-cols-3 gap-14 ml-6">
           <TaskColumn 
             title={"To Do"} 
@@ -101,41 +98,5 @@ const LandingPage = () => {
     </div>
   );
 };
-
-
-// // Task Column Component
-// const TaskColumn = ({ title, color, tasks }) => (
-//   <div className="bg-[#ECEDEE] p-4 rounded-lg shadow-md shadow-stone-400 ">
-//     <h3 className={`font-bold text-lg mb-4 flex items-center justify-center`}>
-//       <FaCircle className={`text-[8px] text-${color}-600`} />
-//       <span className="mx-2 text-gray-600 text-md">{title}</span>
-//       <span className="bg-gray-300/60 text-gray-400 text-xs rounded-full px-1">{tasks.length}</span>
-//     </h3>
-//     <hr className={`my-2 border-2 border-${color}-600  sm:mx-auto lg:my-4`} />
-//     <div className="flex flex-col gap-4">
-//       {tasks.map((task) => (
-//         <TaskCard key={task.id} task={task} />
-//       ))}
-//     </div>
-//   </div>
-// );
-
-// Task Card Component
-const TaskCard = ({ task }) => (
-  <div className="bg-[#FFFF] rounded-xl shadow-md shadow-stone-400 border-l-4 border-gray-300 py-4 px-4">
-    <div className="flex justify-between">
-      <span className={`text-xs font-semibold px-2 py-1 rounded-md ${task.priority === "High" ? "bg-red-100 text-red-600" : task.priority === "Low" ? "bg-yellow-100 text-yellow-600" : "bg-green-100 text-green-600"}`}>
-        {task.priority}
-      </span>
-      <span className="font-bold mr-2">...</span>
-    </div>
-    <h4 className="text-md font-semibold mt-2 ">{task.title}</h4>
-    {task.description && <p className="text-gray-600 text-xs mt-1">{task.description}</p>}
-    <p className="text-xs text-gray-500 mt-7">
-      <strong>Deadline:</strong> {task.deadline}
-    </p>
-  </div>
-);
-
 
 export default LandingPage;

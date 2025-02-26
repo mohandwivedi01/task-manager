@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import { FaSearch, FaFilter, FaExclamationTriangle, FaClipboardList, FaCheckCircle, FaArrowDown, FaAngleDown, FaDotCircle, FaRegCircle, FaCircle } from "react-icons/fa";
+import { FaSearch, FaFilter, FaExclamationTriangle, FaClipboardList, FaCheckCircle, FaAngleDown, FaCircle } from "react-icons/fa";
 import AddTask from "./AddTasks.jsx";
-import {tasks} from "./tasks.js";
-import CalendarModal from "./CalendarModel.jsx";
 import AssignedSuccessModal from "./AssignedSuccessModal.jsx";
+import CalendarModal from "./CalendarModel.jsx";
+import {tasks} from "./tasks.js";
 
 const LandingPage = () => {
   const [addTask, setAddTask] = useState(false); 
@@ -11,7 +11,14 @@ const LandingPage = () => {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("Select Deadline");
   const handleAddTask = () => {
-    !addTask ? setAddTask(true) : setAddTask(false);
+    console.log("Add Task")
+    console.log(addTask)
+    if(!addTask){
+      setAddTask(true);
+      console.log("Task added")
+  }
+    // !addTask ? setAddTask(true) : setAddTask(false)
+    // !addTask ? setAddTask(true) : setAddTask(false);
   }
 
 
@@ -57,7 +64,7 @@ const LandingPage = () => {
         </div>
 
         {addTask && <AddTask 
-                      addTaks={addTaks} 
+                      addTask={addTask} 
                       setAddTask={setAddTask} 
                       handleCalendarToggle={handleCalendarToggle}
                       handleAssignToggle={handleAssignToggle}

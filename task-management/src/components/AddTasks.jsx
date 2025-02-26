@@ -34,6 +34,7 @@ export default function AddTask(props) {
                 </div>
             </div>
         </div>
+        
     )
 };
 

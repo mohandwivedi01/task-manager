@@ -4,7 +4,6 @@ import { FaCalendar, FaUser, FaCheckCircle, FaXing, FaTheRedYeti, FaOptinMonster
 export default function AddTask(props) {
 
     return (
-        // <div className="bg-red-800 text-white">hello world</div>
         <div className="fixed inset-0 flex justify-center items-center py-10">
             <div className=" bg-slate-200 max-w-xs mx-auto mt-10 rounded-lg shadow-md border-2 border-slate-700 text-gray-900 py-5 px-7 ">
                 {/* Header */}

@@ -1,21 +1,18 @@
 import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-// require("dotenv").config();
-// const express = require("express");
-// const cors = require("cors");
+import dbConnection from "./config/dbConnection.js";
+import{app} from "./app.js"
 
-const app = express();
 
-// Middleware
-app.use(express.json()); // Parse JSON requests
-app.use(cors()); // Enable CORS
+dotenv.config({
+    path: "./env"
+})
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
-
-// Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+dbConnection()
+.then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`Server is running on port ${process.env.PORT}`);
+    })
+})
+.catch((error) => {
+    console.error("Error connecting to database: ", error);
+})

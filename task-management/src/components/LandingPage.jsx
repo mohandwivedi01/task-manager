@@ -81,17 +81,17 @@ const LandingPage = () => {
         <div className="flex-grow grid md:grid-cols-3  gap-6 md:gap-14 md:ml-6">
           <TaskColumn 
             title={"To Do"} 
-            color={"indigo"} 
+            color={"#4B0082"} 
             tasks={tasks.todo} 
           />
           <TaskColumn 
             title={"On Progress"} 
-            color={"orange"} 
+            color={"#FFA500"} 
             tasks={tasks.progress} 
           />
           <TaskColumn 
             title={"Done"} 
-            color={"green"} 
+            color={"#00FF00"} 
             tasks={tasks.done} 
           />
         </div>

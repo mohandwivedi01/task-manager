@@ -4,23 +4,14 @@ import AddTask from "./AddTasks.jsx";
 import AssignedSuccessModal from "./AssignedSuccessModal.jsx";
 import CalendarModal from "./CalendarModel.jsx";
 import {tasks} from "./tasks.js";
+import SummaryCard from "./SummaryCard.jsx";
+import TaskColumn from "./TaskColumn.jsx";
 
 const LandingPage = () => {
   const [addTask, setAddTask] = useState(false); 
   const [showCalendar, setShowCalendar] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("Select Deadline");
-  const handleAddTask = () => {
-    console.log("Add Task")
-    console.log(addTask)
-    if(!addTask){
-      setAddTask(true);
-      console.log("Task added")
-  }
-    // !addTask ? setAddTask(true) : setAddTask(false)
-    // !addTask ? setAddTask(true) : setAddTask(false);
-  }
-
 
   const handleDateSelect = (date) => {
       setSelectedDate(date);
@@ -57,10 +48,17 @@ const LandingPage = () => {
       {/* Sidebar Summary */}
       <div className="flex mt-7 space-x-12">
         <div className="w-[240px] md:w-[322px] flex flex-col gap-4">
-          <SummaryCard icon={<FaExclamationTriangle className="text-red-100 bg-red-500 h-12 w-12 p-3 rounded-full" />} title="Expired Tasks" count={5} />
-          <SummaryCard icon={<FaClipboardList className="text-orange-100 bg-orange-500 h-12 w-12 p-3 rounded-full" />} title="All Active Tasks" count={7} />
-          <SummaryCard icon={<FaCheckCircle className="text-blue-100 bg-blue-500 h-12 w-12 p-3 rounded-full" />} title="Completed Tasks" count="2/7" />
-          <button onClick={handleAddTask} className="bg-black py-3 rounded-2xl shadow-md text-sm text-gray-200">+ Add Task</button>
+          <SummaryCard 
+            icon={<FaExclamationTriangle className="text-red-100 bg-red-500 h-12 w-12 p-3 rounded-full" />} title={"Expired Tasks"} 
+            count={5} 
+          />
+          <SummaryCard 
+            icon={<FaClipboardList className="text-orange-100 bg-orange-500 h-12 w-12 p-3 rounded-full" />} 
+            title={"All Active Tasks"} count={7} 
+            />
+          <SummaryCard 
+            icon={<FaCheckCircle className="text-blue-100 bg-blue-500 h-12 w-12 p-3 rounded-full" />} title={"Completed Tasks"} count="2/7" />
+          <button onClick={() => setAddTask(true)} className="bg-black py-3 rounded-2xl shadow-md text-sm text-gray-200">+ Add Task</button>
         </div>
 
         {addTask && <AddTask 
@@ -83,42 +81,44 @@ const LandingPage = () => {
 
         {/* Kanban Board */}
         <div className="flex-grow grid grid-cols-3 gap-14 ml-6">
-          <TaskColumn title="To Do" color="indigo" tasks={tasks.todo} />
-          <TaskColumn title="On Progress" color="orange" tasks={tasks.progress} />
-          <TaskColumn title="Done" color="green" tasks={tasks.done} />
+          <TaskColumn 
+            title={"To Do"} 
+            color={"indigo"} 
+            tasks={tasks.todo} 
+          />
+          <TaskColumn 
+            title={"On Progress"} 
+            color={"orange"} 
+            tasks={tasks.progress} 
+          />
+          <TaskColumn 
+            title={"Done"} 
+            color={"green"} 
+            tasks={tasks.done} 
+          />
         </div>
       </div>
     </div>
   );
 };
 
-// Summary Card Component
-const SummaryCard = ({ icon, title, count }) => (
-  <div className="bg-[#ECEDEE] p-4 rounded-lg items-center h-[190px] shadow-md shadow-stone-400">
-    <div className="text-2xl rounded-full ">{icon}</div>
-    <div className="">
-      <h4 className="text-gray-500 text-sm my-4">{title}</h4>
-      <p className="text-gray-900 text-3xl font-bold">{count}</p>
-    </div>
-  </div>
-);
 
-// Task Column Component
-const TaskColumn = ({ title, color, tasks }) => (
-  <div className="bg-[#ECEDEE] p-4 rounded-lg shadow-md shadow-stone-400 ">
-    <h3 className={`font-bold text-lg mb-4 flex items-center justify-center`}>
-      <FaCircle className={`text-[8px] text-${color}-600`} />
-      <span className="mx-2 text-gray-600 text-md">{title}</span>
-      <span className="bg-gray-300/60 text-gray-400 text-xs rounded-full px-1">{tasks.length}</span>
-    </h3>
-    <hr className={`my-2 border-2 border-${color}-600  sm:mx-auto lg:my-4`} />
-    <div className="flex flex-col gap-4">
-      {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
-    </div>
-  </div>
-);
+// // Task Column Component
+// const TaskColumn = ({ title, color, tasks }) => (
+//   <div className="bg-[#ECEDEE] p-4 rounded-lg shadow-md shadow-stone-400 ">
+//     <h3 className={`font-bold text-lg mb-4 flex items-center justify-center`}>
+//       <FaCircle className={`text-[8px] text-${color}-600`} />
+//       <span className="mx-2 text-gray-600 text-md">{title}</span>
+//       <span className="bg-gray-300/60 text-gray-400 text-xs rounded-full px-1">{tasks.length}</span>
+//     </h3>
+//     <hr className={`my-2 border-2 border-${color}-600  sm:mx-auto lg:my-4`} />
+//     <div className="flex flex-col gap-4">
+//       {tasks.map((task) => (
+//         <TaskCard key={task.id} task={task} />
+//       ))}
+//     </div>
+//   </div>
+// );
 
 // Task Card Component
 const TaskCard = ({ task }) => (

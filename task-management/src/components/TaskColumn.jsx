@@ -3,8 +3,7 @@ import { FaCircle } from "react-icons/fa";
 import TaskCard from "./TaskCard";
 
 export default function TaskColumn(props){
-    const color = "#FFA500";
-    console.log(color)
+    const color = props.color;
     return(
         <div className="bg-[#ECEDEE] p-4 rounded-lg shadow-md shadow-stone-400 ">
             <h3 className={`font-bold text-lg mb-4 flex items-center justify-center`}>

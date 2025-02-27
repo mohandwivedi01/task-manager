@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function TaskCard(props) {
+    console.log(props.task)
     return (
         <div className="bg-[#FFFF] rounded-xl shadow-md shadow-stone-400 border-l-4 border-gray-300 py-4 px-4">
             <div className="flex justify-between">
@@ -12,7 +13,7 @@ export default function TaskCard(props) {
             <h4 className="text-md font-semibold mt-2 ">{props.task.title}</h4>
             {props.task.description && <p className="text-gray-600 text-xs mt-1">{props.task.description}</p>}
             <p className="text-xs text-gray-500 mt-7">
-                <strong>Deadline:</strong> {props.task.deadline}
+                <strong>Deadline:</strong> {props.task.dueDate}
             </p>
         </div>
     )

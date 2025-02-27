@@ -7,25 +7,26 @@ import {tasks} from "./tasks.js";
 import SummaryCard from "./SummaryCard.jsx";
 import TaskColumn from "./TaskColumn.jsx";
 
-const LandingPage = () => {
+const LandingPage = (props) => {
   const [addTask, setAddTask] = useState(false); 
   const [showCalendar, setShowCalendar] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState("Select Deadline");
 
-  const handleDateSelect = (date) => {
-      setSelectedDate(date);
-      setShowCalendar(false);
-  };
+  
 
-  const handleCalendarToggle = () => {
-      setShowCalendar(!showCalendar);
-  };
 
-  const handleAssignToggle = () => {
-    setAddTask(false)
-    setShowAssignModal(true);
-  };
+  
+  
+  console.log(props.responseData.data.map((data) => {console.log(data.title)}));
+
+  // console.log(typeof props.responseData); 
+  // console.log(typeof props.responseData[0]); 
+  // console.log("Full Response:", props.responseData);
+  // const tasksArray = props.responseData[0]|| [];
+  // console.log("Tasks Array:", tasksArray);
+
+
 
   return (
     <div className="bg-white min-h-screen px-3 mt-6 md:px-5 md:mt-10 mb-16">
@@ -79,6 +80,8 @@ const LandingPage = () => {
 
         {/* Columns */}
         <div className="flex-grow grid md:grid-cols-3  gap-6 md:gap-14 md:ml-6">
+
+      
           <TaskColumn 
             title={"To Do"} 
             color={"#4B0082"} 

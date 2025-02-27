@@ -12,10 +12,15 @@ const healthCheck = (req, res) => {
 }
 
 const createTask = asyncHandler(async (req, res) => {
-    const {title, description, status, dueDate} = req.body;
-    const statusEnum = ["Low", "High", "completed", "Timeout"];
+    const {title, description, status, priority, dueDate} = req.body;
+    const statusEnum = ["InProgress", "Completed", "Timeout"];
+    const priorityEnum = ["Low", "High", "Medium"];
     if(!title){
         throw new ApiError(400, "Title is missing");
+    }
+    
+    if(!priorityEnum.includes(priority)){
+        throw new ApiError(400, "Invalid priority");
     }
     
     if(!statusEnum.includes(status)){
@@ -25,6 +30,7 @@ const createTask = asyncHandler(async (req, res) => {
     const task = await Task.create({
         title,
         description,
+        priority,
         status,
         dueDate
     })
@@ -77,6 +83,16 @@ const getTaskById = asyncHandler(async (req, res) => {
 const updateTask = asyncHandler(async (req, res) => {
     const {title, description, status, dueDate} = req.body;
     const {taskId} = req.params;
+
+    // const statusEnum = ["inProgress", "Completed", "Timeout"];
+    // const priorityEnum = ["Low", "High", "Medium"];    
+    // if(!priorityEnum.includes(priority)){
+    //     throw new ApiError(400, "Invalid priority");
+    // }
+    // if(!statusEnum.includes(status)){
+    //     throw new ApiError(400, "Invalid status");
+    // }
+
     
     if(!taskId) {
         throw new ApiError(400, "Task id is missing");

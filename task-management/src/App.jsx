@@ -20,6 +20,12 @@ function App() {
   const [timeoutTasks, setTimeoutTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("Select Deadline");
+  const [status, setStatus] = useState("");
+  const [priority, setPriority] = useState("");
+
   useEffect(() => {
     let isMount = true;
 
@@ -44,7 +50,7 @@ function App() {
       }
     };
 
-    fetchTasks();  
+    fetchTasks();
 
     return () => {
       isMount = false; // Cleanup function to prevent state updates on unmount
@@ -67,7 +73,7 @@ function App() {
   }
 
   const handleAssignToggle = () => {
-    setAddTask(false)
+    setAddTask(false); 
     setShowAssignModal(true);
   };
 
@@ -90,7 +96,7 @@ function App() {
 
         {/* Sidebar Summary */}
         <div className="flex mt-7 space-x-5 lg:space-x-12">
-          
+
           <div className=" w-[200px] md:w-[322px] flex flex-col gap-4">
             <SummaryCard
               icon={<FaExclamationTriangle className="text-red-100 bg-red-500 h-12 w-12 p-3 rounded-full" />} title={"Expired Tasks"}
@@ -108,11 +114,20 @@ function App() {
 
           {/* Modals */}
           {addTask && <AddTask
-            addTask={addTask}
             setAddTask={setAddTask}
+            title={title}
+            setTitle={setTitle}
+            description={description}
+            setDescription={setDescription}
+            dueDate={dueDate}
+            setDueDate={setDueDate}
+            status={status}
+            setStatus={setStatus}
+            priority={priority}
+            setPriority={setPriority}
             handleAssignToggle={handleAssignToggle}
           />}
-          
+
           {showAssignModal && <AssignedSuccessModal
             setShowAssignModal={setShowAssignModal}
           />}
@@ -122,53 +137,34 @@ function App() {
 
             {
               <TaskColumn
-                key={inProgressTasks[0]._id}
+                key={1}
                 title={"Inprogress"}
                 color={"yellow"}
                 tasks={inProgressTasks}
+                setAddTask={setAddTask}
+                handleAssignToggle={handleAssignToggle}
               />
             }
             {
               <TaskColumn
-                key={completedTasks[0]._id}
+                key={2}
                 title={"Completed"}
                 color={"red"}
                 tasks={completedTasks}
+                setAddTask={setAddTask}
+                handleAssignToggle={handleAssignToggle}
               />
             }
             {
               <TaskColumn
-                key={timeoutTasks[0]._id}
+                key={3}
                 title={"Timeout"}
                 color={"green"}
                 tasks={timeoutTasks}
+                setAddTask={setAddTask}
+                handleAssignToggle={handleAssignToggle}
               />
             }
-
-            {/* (
-              <TaskColumn
-                key={inProgressTasks[0]._id}
-                title={"InProgress"}
-                inProgressTasks={inProgressTasks}
-              />) */}
-            
-          
-          
-            {/* <TaskColumn
-              title={"To Do"}
-              color={"#4B0082"}
-              tasks={tasks.todo}
-            />
-            <TaskColumn
-              title={"On Progress"}
-              color={"#FFA500"}
-              tasks={tasks.progress}
-            />
-            <TaskColumn
-              title={"Done"}
-              color={"#00FF00"}
-              tasks={tasks.done}
-            /> */}
           </div>
         </div>
       </div>

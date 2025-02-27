@@ -14,7 +14,7 @@ export default function TaskColumn(props){
             <hr className={`my-2 border-2 border-${props.color}-600 text-${props.color}-600  sm:mx-auto lg:my-4`} />
             <div className="flex flex-col gap-4">
               {props.tasks.map((task) => (
-                <TaskCard key={task._id} task={task} />
+                <TaskCard key={task._id} task={task} setAddTask={props.setAddTask}/>
               ))}
             </div>
          </div>

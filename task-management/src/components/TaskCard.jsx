@@ -1,13 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EditTask from "./EditTask";
-import { FaAngleDown } from "react-icons/fa";
+import { FaAngleDown, FaEdit, FaRegTrashAlt } from "react-icons/fa";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const API_URL = import.meta.env.VITE_BACKEND_API;
 
 export default function TaskCard(props) {
-    const [editTask, setEditTask] = useState(false);
-    const [deleteTask, setDeleteTask] = useState()
-    const [completeTask, setCompleteTask] = useState(false)
-    const [option, setOption] = useState();
-    
+    const [tasks, setTasks] = useState([]);
+
+    const handleEdit = (task) => {
+        props.setAddTask(true)
+    }
+
+    const handleDelete = async (task) => {
+        toast.info("deleting..")
+        if (!task || !task._id) {
+            console.error("Invalid task data");
+            return;
+        }
+        try {
+            const response = await axios.delete(`${API_URL}/delete-task/${task._id}`);
+            if (response.status === 200) {
+                toast.success("Task deleted successfully!"); // Assuming setTasks updates the UI
+
+            } else {
+                throw new Error("Failed to delete task");
+            }
+        } catch (error) {
+            console.error("Error deleting task:", error);
+            toast.error(error.response?.data?.message || "Failed to delete task.");
+        }
+    };
+
+
 
     return (
         <div className="bg-[#FFFF] rounded-xl shadow-md shadow-stone-400 border-l-4 border-gray-300 py-4 px-4">
@@ -15,20 +41,10 @@ export default function TaskCard(props) {
                 <span className={`text-xs font-semibold px-2 py-1 rounded-md ${props.task.priority === "High" ? "bg-red-100 text-red-600" : props.task.priority === "Low" ? "bg-yellow-100 text-yellow-600" : "bg-green-100 text-green-600"}`}>
                     {props.task.priority}
                 </span>
-                <span className="font-semibold"><button onClick={() => { setEditTask(true) }}>
-                    <select
-                        className="block w-5 appearance-none bg-white  rounded-lg focus:outline-none px-1 cursor-pointer"
-                        value={option}
-                        onChange={(e) => setOption(e.target.value)}
-                    >
-                        <option value="...">...</option>
-                        <option value="Edit">Edit</option>
-                        <option value="Delete">Delete</option>
-                        <option value="Complete">Complete</option>
-                    </select>
-                    <FaAngleDown className="absolute right-3 top-2 text-gray-500 pointer-events-none" />
-
-                </button></span>
+                <span className="text-sm space-x-2 ">
+                    <button onClick={() => handleEdit(props.task)}><FaEdit className="text-indigo-600" /></button>
+                    <button onClick={() => handleDelete(props.task)}><FaRegTrashAlt className="text-red-600" /></button>
+                </span>
 
             </div>
             <h4 className="text-md font-semibold mt-2 ">{props.task.title}</h4>

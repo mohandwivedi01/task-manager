@@ -1,7 +1,96 @@
-import { useState } from "react";
-import { FaCalendar, FaUser, FaCheckCircle, FaXing, FaTheRedYeti, FaOptinMonster, FaGripVertical, FaEllipsisV } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaCalendar, FaUser, FaEllipsisV } from "react-icons/fa";
+import Options from "./Options.jsx";
+import CalendarModal from "./CalendarModel.jsx";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const API_URL = import.meta.env.VITE_BACKEND_API;
 
 export default function AddTask(props) {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [dueDate, setDueDate] = useState("Select Deadline");
+    const [status, setStatus] = useState();
+    const [priority, setPriority] = useState();
+    const [options, setOptions] = useState(false);
+    const [calader, setCalader] = useState(false)
+
+    const handleSubmit = async (e) => {
+        console.log("1 API URL: ", API_URL)
+        e.preventDefault();
+
+        if (!title) {
+            toast.error("Please enter a title");
+            alert("Please enter a title")
+            return;
+        }
+        if (!status || !priority) {
+            toast.error("Please select a status and priority")
+            alert("Please select a status and priority")
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            
+            const postTaskResponse = await axios.post(`${API_URL}/add-task`, {
+                title,
+                description,
+                dueDate,
+                status,
+                priority,
+            });
+
+            console.log("response: ", postTaskResponse);
+
+            if (postTaskResponse.status === 200) {
+                toast.success("Task added successfully");
+                alert("Task added successfully");
+                setLoading(false);
+                props.handleAssignToggle();
+            } else {
+                setError("Failed to add task", postTaskResponse.statusCode, postTaskResponse);
+                alert("Failed to add task", postTaskResponse.statusCode, postTaskResponse);
+            }
+
+        } catch (err) {
+            console.error("Error: ", err, error)
+            setError(err.message || "An error occurred while fechting tasks.");
+            setLoading(false);
+        } finally {
+            setLoading(false); // ✅ Ensure loading stops
+        };
+
+        if (loading) {
+            return (
+                <div className="flex justify-center items-center">
+                    <div className="spinner-border text-slate-900" role="status">
+                        <span className="sr-only">Posting...</span>
+                    </div>
+                </div>
+            )
+        }
+        if (error) {
+            return (
+                <div className="flex justify-center items-center">
+                    <div className="text-red-600 text-lg font-semibold">
+                        {error.message}
+                    </div>
+                </div>
+            )
+        }
+
+    }
+
+
+    const handleOptions = (e) => {
+        e.preventDefault();
+        setOptions(!options);
+    }
 
     return (
         <div className="fixed inset-0 flex justify-center items-center py-10">
@@ -9,31 +98,52 @@ export default function AddTask(props) {
                 {/* Header */}
                 <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">ADD TASK</h2>
-                    <button className="text-blue-500 text-xl">+</button>
+                    <button onClick={()=>props.setAddTask(false)} className="text-slate-800 hover:text-blue-900 text-md hover:bg-slate-300 px-2 rounded-full">x</button>
                 </div>
 
-                {/* Task Description */}
-                <div className="mt-4">
-                    <div className="flex justify-between">
-                        <h3 className="text-md font-bold">TASK 1</h3>
-                        <span className="text-sm text-gray-500"><FaEllipsisV /></span>
+                <form>
+                    {/* Task Description */}
+                    <div className="mt-4">
+                        <div className="flex justify-between ">
+                            <input className="w-full py-1 px-1 bg-slate-200 rounded-lg  focus:outline-none text-slate-800 font-semibold"
+                                placeholder="Title..."
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                            <span className="text-sm text-gray-500 mt-3 ml-2"><button onClick={handleOptions}><FaEllipsisV /></button>
+                                {options && <Options
+                                    heading={"Select"}
+                                    status={status}
+                                    setStatus={setStatus}
+                                    priority={priority}
+                                    setPriority={setPriority}
+                                    handleOptions={handleOptions}
+                                />}
+                            </span>
+                        </div>
+                        <hr className="border border-gray-600 my-1" />
+                        <textarea className="w-full h-[150px] py-1 px-1 bg-slate-200 rounded-lg  focus:outline-none text-slate-800"
+                            placeholder="Enter task..."
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
                     </div>
-                    <hr className="border-2 border-gray-600" />
-                    <p className="text-grya-600 text-sm mt-2">
-                        Lorem ipsum dolor sit amet consectetur. Ut diam tellus nunc sed amet mauris molestie.
-                        Lorem ipsum dolor sit amet consectetur. Ut diam tellus nunc sed amet mauris molestie.
-                        Lorem ipsum dolor sit amet consectetur. Ut diam tellus nunc sed amet mauris molestie.
-                        Lorem ipsum dolor sit amet consectetur. Ut diam tellus nunc sed amet mauris molestie.
-                        Lorem ipsum dolor sit amet consectetur. Ut diam tellus nunc sed amet mauris molestie.
-                    </p>
-                </div>
-                <div className="flex justify-between mt-6 text-gray-500 text-xs font-bold">
-                    <button className="flex justify-center gap-1 hover:text-blue-500" onClick={props.handleCalendarToggle} ><FaCalendar className=" text-gray-600 w-3 h-3 " />{props.selectedDate}</button>
-                    <button className=" flex items-center gap-1  hover:text-blue-500" onClick={props.handleAssignToggle} ><FaUser className="text-gray-600 h-3 w-3 mb-1" />Assigned to</button>
-                </div>
+
+                    <div className="flex justify-between mt-6 text-gray-500 text-xs font-bold">
+                        <button className="flex justify-center gap-1 hover:text-blue-500" onClick={(e) => {
+                            e.preventDefault();
+                            setCalader(true)
+                        }} ><FaCalendar className=" text-gray-600 w-3 h-3 " />{dueDate}</button>
+                        {calader && <CalendarModal
+                                    dueDate={dueDate}
+                                    setDueDate={setDueDate}
+                                    setCalader={setCalader}
+                        />}
+                        <button className=" flex items-center gap-1  hover:text-blue-500" onClick={handleSubmit} ><FaUser className="text-gray-600 h-3 w-3 mb-1" />Assigned to</button>
+                    </div>
+                </form>
+
             </div>
         </div>
-        
+
     )
 };
 

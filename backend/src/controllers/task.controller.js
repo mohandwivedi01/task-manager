@@ -19,12 +19,12 @@ const createTask = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Title is missing");
     }
     
-    if(!priorityEnum.includes(priority)){
-        throw new ApiError(400, "Invalid priority");
+    if(!priorityEnum.includes(priority.trim())){
+        throw new ApiError(400, `Invalid priority: ${priority}`);
     }
     
-    if(!statusEnum.includes(status)){
-        throw new ApiError(400, "Invalid status");
+    if(!statusEnum.includes(status.trim())){
+        throw new ApiError(400, `Invalid status: ${status}`);
     }
 
     const task = await Task.create({

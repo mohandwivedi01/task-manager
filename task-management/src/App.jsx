@@ -15,9 +15,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addTask, setAddTask] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("Select Deadline");
   const [inProgressTasks, setInProgressTasks] = useState();
   const [timeoutTasks, setTimeoutTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
@@ -38,9 +36,9 @@ function App() {
           setLoading(false);
         }
 
-      } catch (error) {
+      } catch (err) {
         if (isMount) {
-          setError(error.message || "An error occurred while fechting tasks.");
+          setError(err.message || "An error occurred while fechting tasks.");
           setLoading(false);
         }
       }
@@ -68,23 +66,11 @@ function App() {
     )
   }
 
-  const handleDateSelect = (date) => {
-    setSelectedDate(date);
-    setShowCalendar(false);
-  };
-
-  const handleCalendarToggle = () => {
-    setShowCalendar(!showCalendar);
-  };
-
   const handleAssignToggle = () => {
     setAddTask(false)
     setShowAssignModal(true);
   };
 
-  console.log(inProgressTasks)
-  console.log(completedTasks)
-  console.log(timeoutTasks)
 
   return (
     <>
@@ -104,7 +90,7 @@ function App() {
 
         {/* Sidebar Summary */}
         <div className="flex mt-7 space-x-5 lg:space-x-12">
-          {/* <button className="flex"><FaBars className="text-xl"/></button> */}
+          
           <div className=" w-[200px] md:w-[322px] flex flex-col gap-4">
             <SummaryCard
               icon={<FaExclamationTriangle className="text-red-100 bg-red-500 h-12 w-12 p-3 rounded-full" />} title={"Expired Tasks"}
@@ -124,15 +110,9 @@ function App() {
           {addTask && <AddTask
             addTask={addTask}
             setAddTask={setAddTask}
-            handleCalendarToggle={handleCalendarToggle}
             handleAssignToggle={handleAssignToggle}
-            selectedDate={selectedDate}
           />}
-          {showCalendar && <CalendarModal
-            handleDateSelect={handleDateSelect}
-            setShowCalendar={setShowCalendar}
-            setShowAssignModal={setShowAssignModal}
-          />}
+          
           {showAssignModal && <AssignedSuccessModal
             setShowAssignModal={setShowAssignModal}
           />}

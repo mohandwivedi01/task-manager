@@ -115,23 +115,24 @@ task-manager/
 ---
 
 ## 🎯 How to Use
-1️⃣ Open the app in your browser.
-2️⃣ Add a new task with title, description, due date, priority, and status.
-3️⃣ Click on a task to edit or delete it.
-4️⃣ Manage your tasks efficiently! ✅
+#### 1️⃣ Open the app in your browser.
+#### 2️⃣ Add a new task with title, description, due date, priority, and status.
+#### 3️⃣ Click on a task to edit or delete it.
+#### 4️⃣ Manage your tasks efficiently! ✅
 
 
 ## ⚡ Future Improvements
-✅ Drag & drop tasks
-✅ User authentication & roles
-✅ Dark mode support
-✅ Due date notifications
+#### ✅ Drag & drop tasks
+#### ✅ User authentication & roles
+#### ✅ Dark mode support
+#### ✅ Due date notifications
 
+---  
 
-## 🤝 Contributing
+### 🤝 Contributing
 Feel free to fork this repository and contribute! Open issues for suggestions and bug fixes.
 
-## 📜 License
+### 📜 License
 This project is licensed under the MIT License.
 
 ### 🚀 Enjoy Task Managing! ✨ 

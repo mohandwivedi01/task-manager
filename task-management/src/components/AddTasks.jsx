@@ -9,53 +9,48 @@ const API_URL = import.meta.env.VITE_BACKEND_API;
 
 export default function AddTask(props) {
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState();
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [dueDate, setDueDate] = useState("Select Deadline");
+    const [status, setStatus] = useState();
+    const [priority, setPriority] = useState();
 
     const [options, setOptions] = useState(false);
     const [calader, setCalader] = useState(false)
 
     const handleSubmit = async (e) => {
-        console.log("1 API URL: ", API_URL)
         e.preventDefault();
 
-        if (!props.title) {
+        if (!title) {
             toast.error("Please enter a title");
-            alert("Please enter a title")
             return;
         }
-        if (!props.status || !props.priority) {
+        if (!status || !priority) {
             toast.error("Please select a status and priority")
-            alert("Please select a status and priority")
             return;
         }
 
         setLoading(true);
 
         try {
-            console.log(props.title)
-            console.log(props.description)
-            console.log(props.dueDate)
-            console.log(props.status)
-            console.log(props.priority)
-            
             const postTaskResponse = await axios.post(`${API_URL}/add-task`, {
-                title: props?.title,
-                description: props?.description,
-                dueDate: props?.dueDate,
-                status: props?.status,
-                priority: props?.priority,
+                title,
+                description,
+                dueDate,
+                status,
+                priority,
             });
 
             console.log("response: ", postTaskResponse);
 
             if (postTaskResponse.status === 200) {
                 toast.success("Task added successfully");
-                alert("Task added successfully");
                 setLoading(false);
                 props.handleAssignToggle();
             } else {
                 setError("Failed to add task", postTaskResponse.statusCode, postTaskResponse);
-                alert("Failed to add task", postTaskResponse.statusCode, postTaskResponse);
+                toast.error("Failed to add task", postTaskResponse.statusCode, postTaskResponse);
             }
 
         } catch (err) {
@@ -64,11 +59,6 @@ export default function AddTask(props) {
             setLoading(false);
         } finally {
             setLoading(false); // ✅ Ensure loading stops
-            props.setTitle("")
-            props.setDescription("")
-            props.setDueDate("")
-            props.setStatus("")
-            props.setPriority("")
         };
 
         if (loading) {
@@ -89,7 +79,6 @@ export default function AddTask(props) {
                 </div>
             )
         }
-
     }
 
 
@@ -104,7 +93,7 @@ export default function AddTask(props) {
                 {/* Header */}
                 <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">ADD TASK</h2>
-                    <button onClick={()=>props.setAddTask(false)} className="text-slate-800 hover:text-blue-900 text-md hover:bg-slate-300 px-2 rounded-full">x</button>
+                    <button onClick={() => props.setAddTask(false)} className="text-slate-800 hover:text-blue-900 text-md hover:bg-slate-300 px-2 rounded-full">x</button>
                 </div>
 
                 <form>
@@ -113,16 +102,15 @@ export default function AddTask(props) {
                         <div className="flex justify-between ">
                             <input className="w-full py-1 px-1 bg-slate-200 rounded-lg  focus:outline-none text-slate-800 font-semibold"
                                 placeholder="Title..."
-                                onChange={(e) => props.setTitle(e.target.value)}
-                                value={props.task?.title || props.title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                value={title}
                             />
                             <span className="text-sm text-gray-500 mt-3 ml-2"><button onClick={handleOptions}><FaEllipsisV /></button>
                                 {options && <Options
-                                    heading={"Select"}
-                                    status={props.status}
-                                    setStatus={props.setStatus}
-                                    priority={props.priority}
-                                    setPriority={props.setPriority}
+                                    status={status}
+                                    setStatus={setStatus}
+                                    priority={priority}
+                                    setPriority={setPriority}
                                     handleOptions={handleOptions}
                                 />}
                             </span>
@@ -130,7 +118,8 @@ export default function AddTask(props) {
                         <hr className="border border-gray-600 my-1" />
                         <textarea className="w-full h-[150px] py-1 px-1 bg-slate-200 rounded-lg  focus:outline-none text-slate-800"
                             placeholder="Enter task..."
-                            onChange={(e) => props.setDescription(e.target.value)}
+                            onChange={(e) => setDescription(e.target.value)}
+                            value={description}
                         />
                     </div>
 
@@ -138,13 +127,13 @@ export default function AddTask(props) {
                         <button className="flex justify-center gap-1 hover:text-blue-500" onClick={(e) => {
                             e.preventDefault();
                             setCalader(true)
-                        }} ><FaCalendar className=" text-gray-600 w-3 h-3 " />{props.dueDate}</button>
+                        }} ><FaCalendar className=" text-gray-600 w-3 h-3 " />{dueDate}</button>
                         {calader && <CalendarModal
-                                    dueDate={props.dueDate}
-                                    setDueDate={props.setDueDate}
-                                    setCalader={setCalader}
+                            dueDate={dueDate}
+                            setDueDate={setDueDate}
+                            setCalader={setCalader}
                         />}
-                        <button className=" flex items-center gap-1  hover:text-blue-500" onClick={handleSubmit} ><FaUser className="text-gray-600 h-3 w-3 mb-1" />Assigned to</button>
+                        <button className=" flex items-center gap-1  hover:text-blue-500" onClick={handleSubmit} ><FaUser className="text-gray-600 h-3 w-3 mb-1" />"Assigned to"</button>
                     </div>
                 </form>
 

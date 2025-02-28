@@ -81,18 +81,8 @@ const getTaskById = asyncHandler(async (req, res) => {
 })
 
 const updateTask = asyncHandler(async (req, res) => {
-    const {title, description, status, dueDate} = req.body;
+    const {title, description, status, priority, dueDate} = req.body;
     const {taskId} = req.params;
-
-    // const statusEnum = ["inProgress", "Completed", "Timeout"];
-    // const priorityEnum = ["Low", "High", "Medium"];    
-    // if(!priorityEnum.includes(priority)){
-    //     throw new ApiError(400, "Invalid priority");
-    // }
-    // if(!statusEnum.includes(status)){
-    //     throw new ApiError(400, "Invalid status");
-    // }
-
     
     if(!taskId) {
         throw new ApiError(400, "Task id is missing");
@@ -111,6 +101,7 @@ const updateTask = asyncHandler(async (req, res) => {
                 title,
                 description,
                 status,
+                priority,
                 dueDate
             }
         },

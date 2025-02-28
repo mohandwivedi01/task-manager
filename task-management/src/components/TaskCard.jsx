@@ -3,11 +3,25 @@ import EditTask from "./EditTask";
 import { FaAngleDown, FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import AddTask from "./AddTasks";
 
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
 export default function TaskCard(props) {
-    const [tasks, setTasks] = useState([]);
+    const [editTask, setEditTask] = useState(false);
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [dueDate, setDueDate] = useState("Select Deadline");
+    const [status, setStatus] = useState();
+    const [priority, setPriority] = useState();
+
+    useEffect(() => {
+        setTitle(props.task.title);
+        setDescription(props.task.description);
+        setDueDate(props.task.dueDate);
+        setStatus(props.task.status);
+        setPriority(props.task.priority);
+    }, [])
 
     const handleEdit = (task) => {
         props.setAddTask(true)
@@ -42,11 +56,24 @@ export default function TaskCard(props) {
                     {props.task.priority}
                 </span>
                 <span className="text-sm space-x-2 ">
-                    <button onClick={() => handleEdit(props.task)}><FaEdit className="text-indigo-600" /></button>
+                    <button onClick={()=>setEditTask(true)}><FaEdit className="text-indigo-600" /></button>
                     <button onClick={() => handleDelete(props.task)}><FaRegTrashAlt className="text-red-600" /></button>
                 </span>
-
             </div>
+            {editTask && <EditTask
+                id={props.task._id}
+                title={title}
+                setTitle={setTitle}
+                description={description}
+                setDescription={setDescription}
+                dueDate={dueDate}
+                setDueDate={setDueDate}
+                priority={priority}
+                setPriority={setPriority}
+                status={status}
+                setStatus={setStatus}
+                setEditTask={setEditTask}                
+            />}
             <h4 className="text-md font-semibold mt-2 ">{props.task.title}</h4>
             {props.task.description && <p className="text-gray-600 text-xs mt-1">{props.task.description}</p>}
             <p className="text-xs text-gray-500 mt-7">

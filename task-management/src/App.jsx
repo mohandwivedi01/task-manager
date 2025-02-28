@@ -3,7 +3,6 @@ import axios from 'axios'
 import { FaSearch, FaFilter, FaExclamationTriangle, FaClipboardList, FaCheckCircle, FaAngleDown, } from "react-icons/fa"
 import AddTask from './components/AddTasks.jsx'
 import AssignedSuccessModal from './components/AssignedSuccessModal.jsx'
-import CalendarModal from './components/CalendarModel.jsx'
 import SummaryCard from './components/SummaryCard.jsx'
 import TaskColumn from './components/TaskColumn'
 
@@ -11,7 +10,7 @@ const API_URL = import.meta.env.VITE_BACKEND_API;
 
 function App() {
 
-  // const [responseData, setResponseData] = useState([]);
+  const [responseData, setResponseData] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addTask, setAddTask] = useState(false);
@@ -20,22 +19,16 @@ function App() {
   const [timeoutTasks, setTimeoutTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("Select Deadline");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
-
   useEffect(() => {
     let isMount = true;
 
     const fetchTasks = async () => {
       try {
         const response = await axios.get(`${API_URL}/get-all-tasks`);
-
+        
         if (isMount) {
           const data = response.data?.data || [];
-          // setResponseData(response.data);
+          setResponseData(data);
           setInProgressTasks(data.filter((task) => task.status === "InProgress"));
           setTimeoutTasks(data.filter((task) => task.status === "Timeout"));
           setCompletedTasks(data.filter((task) => task.status === "Completed"));
@@ -100,14 +93,14 @@ function App() {
           <div className=" w-[200px] md:w-[322px] flex flex-col gap-4">
             <SummaryCard
               icon={<FaExclamationTriangle className="text-red-100 bg-red-500 h-12 w-12 p-3 rounded-full" />} title={"Expired Tasks"}
-              count={5}
+              count={timeoutTasks.length}
             />
             <SummaryCard
               icon={<FaClipboardList className="text-orange-100 bg-orange-500 h-12 w-12 p-3 rounded-full" />}
-              title={"All Active Tasks"} count={7}
+              title={"All Active Tasks"} count={inProgressTasks.length}
             />
             <SummaryCard
-              icon={<FaCheckCircle className="text-blue-100 bg-blue-500 h-12 w-12 p-3 rounded-full" />} title={"Completed Tasks"} count="2/7"
+              icon={<FaCheckCircle className="text-blue-100 bg-blue-500 h-12 w-12 p-3 rounded-full" />} title={"Completed Tasks"} count={`${completedTasks.length}/${inProgressTasks.length}`}
             />
             <button onClick={() => setAddTask(true)} className="bg-black py-3 rounded-2xl shadow-md text-sm text-gray-200">+ Add Task</button>
           </div>
@@ -115,16 +108,6 @@ function App() {
           {/* Modals */}
           {addTask && <AddTask
             setAddTask={setAddTask}
-            title={title}
-            setTitle={setTitle}
-            description={description}
-            setDescription={setDescription}
-            dueDate={dueDate}
-            setDueDate={setDueDate}
-            status={status}
-            setStatus={setStatus}
-            priority={priority}
-            setPriority={setPriority}
             handleAssignToggle={handleAssignToggle}
           />}
 
@@ -149,7 +132,7 @@ function App() {
               <TaskColumn
                 key={2}
                 title={"Completed"}
-                color={"red"}
+                color={"green"}
                 tasks={completedTasks}
                 setAddTask={setAddTask}
                 handleAssignToggle={handleAssignToggle}
@@ -159,7 +142,7 @@ function App() {
               <TaskColumn
                 key={3}
                 title={"Timeout"}
-                color={"green"}
+                color={"red"}
                 tasks={timeoutTasks}
                 setAddTask={setAddTask}
                 handleAssignToggle={handleAssignToggle}

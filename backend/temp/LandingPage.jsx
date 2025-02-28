@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import { FaSearch, FaFilter, FaExclamationTriangle, FaClipboardList, FaCheckCircle, FaAngleDown, FaBars } from "react-icons/fa";
-import AddTask from "./AddTasks.jsx";
-import AssignedSuccessModal from "./AssignedSuccessModal.jsx";
-import CalendarModal from "./CalendarModel.jsx";
+import AddTask from "../../task-management/src/components/AddTasks.jsx";
+import AssignedSuccessModal from "../../task-management/src/components/AssignedSuccessModal.jsx";
+import CalendarModal from "../../task-management/src/components/CalendarModel.jsx";
 import {tasks} from "./tasks.js";
-import SummaryCard from "./SummaryCard.jsx";
-import TaskColumn from "./TaskColumn.jsx";
+import SummaryCard from "../../task-management/src/components/SummaryCard.jsx";
+import TaskColumn from "../../task-management/src/components/TaskColumn.jsx";
 
 const LandingPage = (props) => {
   const [addTask, setAddTask] = useState(false); 

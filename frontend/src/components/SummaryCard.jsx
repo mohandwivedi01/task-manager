@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function SummaryCard(props) {
-    return (
+    return ( 
         <div className="bg-[#ECEDEE] p-4 rounded-lg items-center h-[190px] shadow-md shadow-stone-400">
             <div className="text-2xl rounded-full ">{props.icon}</div>
             <div className="">

@@ -4,7 +4,7 @@ import { FaSearch, FaFilter, FaExclamationTriangle, FaClipboardList, FaCheckCirc
 import AddTask from './components/AddTasks.jsx'
 import AssignedSuccessModal from './components/AssignedSuccessModal.jsx'
 import SummaryCard from './components/SummaryCard.jsx'
-import TaskColumn from './components/TaskColumn'
+import TaskColumn from './components/TaskColumn.jsx'
 
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
@@ -109,10 +109,12 @@ function App() {
           {addTask && <AddTask
             setAddTask={setAddTask}
             handleAssignToggle={handleAssignToggle}
+            setResponseData={setResponseData}
           />}
 
           {showAssignModal && <AssignedSuccessModal
             setShowAssignModal={setShowAssignModal}
+            setResponseData={setResponseData}
           />}
 
           {/* Columns */}
@@ -126,6 +128,7 @@ function App() {
                 tasks={inProgressTasks}
                 setAddTask={setAddTask}
                 handleAssignToggle={handleAssignToggle}
+                setResponseData={setResponseData}
               />
             }
             {
@@ -136,16 +139,18 @@ function App() {
                 tasks={completedTasks}
                 setAddTask={setAddTask}
                 handleAssignToggle={handleAssignToggle}
+                setResponseData={setResponseData}
               />
             }
             {
               <TaskColumn
-                key={3}
+               key={3}
                 title={"Timeout"}
                 color={"red"}
                 tasks={timeoutTasks}
                 setAddTask={setAddTask}
                 handleAssignToggle={handleAssignToggle}
+                setResponseData={setResponseData}
               />
             }
           </div>
@@ -156,3 +161,32 @@ function App() {
 }
 
 export default App
+
+
+
+
+
+
+
+
+
+// import React from "react";
+// import { TaskProvider } from "./contexts/TaskContext.jsx";
+// import TaskForm from "./components/TaskForm.jsx";
+// import TaskList from "./components/TaskList.jsx";
+
+// function App() {
+//   return (
+//     <TaskProvider>
+//       <div className="container mx-auto">
+//         <h1 className="text-2xl font-bold text-center my-5">
+//           Task Manager
+//         </h1>
+//         <TaskForm />
+//         <TaskList />
+//       </div>
+//     </TaskProvider>
+//   )
+// }
+
+// export default App;

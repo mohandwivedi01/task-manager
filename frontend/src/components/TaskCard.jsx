@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import EditTask from "./EditTask";
-import { FaAngleDown, FaEdit, FaRegTrashAlt } from "react-icons/fa";
+import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
-import AddTask from "./AddTasks";
 
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
@@ -23,10 +22,6 @@ export default function TaskCard(props) {
         setPriority(props.task.priority);
     }, [])
 
-    const handleEdit = (task) => {
-        props.setAddTask(true)
-    }
-
     const handleDelete = async (task) => {
         toast.info("deleting..")
         if (!task || !task._id) {
@@ -37,7 +32,6 @@ export default function TaskCard(props) {
             const response = await axios.delete(`${API_URL}/delete-task/${task._id}`);
             if (response.status === 200) {
                 toast.success("Task deleted successfully!"); // Assuming setTasks updates the UI
-
             } else {
                 throw new Error("Failed to delete task");
             }
@@ -46,8 +40,6 @@ export default function TaskCard(props) {
             toast.error(error.response?.data?.message || "Failed to delete task.");
         }
     };
-
-
 
     return (
         <div className="bg-[#FFFF] rounded-xl shadow-md shadow-stone-400 border-l-4 border-gray-300 py-4 px-4">

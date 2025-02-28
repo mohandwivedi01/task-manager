@@ -6,7 +6,7 @@ export default function CalendarModal(props){
     return (
         <div className="fixed inset-0 flex justify-center items-center bg-opacity-40">
         <div className="bg-white p-4 rounded-lg shadow-lg w-40">
-            <h3 className="text-md font-semibold mb-2">Select a Date</h3>
+            <h3 className="text-md font-semibold mb-2">Select a Date</h3> 
             <input
                 type="date"
                 className="p-1 border rounded"

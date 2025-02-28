@@ -7,7 +7,7 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
-export default function EditTask(props) {
+export default function EditTask(props) { 
     const [options, setOptions] = useState(false);
     const [calader, setCalader] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -109,3 +109,48 @@ export default function EditTask(props) {
         </div>
     );
 }
+
+
+
+// import React, { useState, useContext } from "react";
+// import { TaskContext } from "../contexts/TaskContext.jsx";
+
+// export default function EditTask({ task, setIsEditing }) {
+//     const { updateTask } = useContext(TaskContext);
+//     const [title, setTitle] = useState(task.title);
+//     const [description, setDescription] = useState(task.description);
+
+//     const handleSubmit = (e) => {
+//         e.preventDefault();
+//         updateTask(task.id, { ...task, title, description });
+//         setIsEditing(false);
+//     };
+
+//     return (
+//         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+//             <div className="bg-white p-5 rounded shadow-md">
+//                 <h2 className="text-lg font-bold">Edit Task</h2>
+//                 <form onSubmit={handleSubmit}>
+//                     <input
+//                         className="w-full p-2 border rounded mb-2"
+//                         value={title}
+//                         onChange={(e) => setTitle(e.target.value)}
+//                     />
+//                     <textarea
+//                         className="w-full p-2 border rounded mb-2"
+//                         value={description}
+//                         onChange={(e) => setDescription(e.target.value)}
+//                     />
+//                     <div className="flex justify-between">
+//                         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+//                             Update
+//                         </button>
+//                         <button onClick={() => setIsEditing(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
+//                             Cancel
+//                         </button>
+//                     </div>
+//                 </form>
+//             </div>
+//         </div>
+//     );
+// }

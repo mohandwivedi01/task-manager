@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaCalendar, FaUser, FaEllipsisV } from "react-icons/fa";
 import Options from "./Options.jsx";
 import CalendarModal from "./CalendarModel.jsx";
@@ -18,7 +18,7 @@ export default function AddTask(props) {
 
     const [options, setOptions] = useState(false);
     const [calader, setCalader] = useState(false)
-
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -133,7 +133,7 @@ export default function AddTask(props) {
                             setDueDate={setDueDate}
                             setCalader={setCalader}
                         />}
-                        <button className=" flex items-center gap-1  hover:text-blue-500" onClick={handleSubmit} ><FaUser className="text-gray-600 h-3 w-3 mb-1" />"Assigned to"</button>
+                        <button className=" flex items-center gap-1  hover:text-blue-500" onClick={handleSubmit} ><FaUser className="text-gray-600 h-3 w-3 mb-1" />Add TaskFormask</button>
                     </div>
                 </form>
 

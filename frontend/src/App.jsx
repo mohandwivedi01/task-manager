@@ -1,8 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import axios from 'axios'
-import { FaSearch, FaFilter, FaExclamationTriangle, FaClipboardList, FaCheckCircle, FaAngleDown, } from "react-icons/fa"
-// import AddTask from './components/AddTasks.jsx'
 
+import { FaExclamationTriangle, FaClipboardList, FaCheckCircle, } from "react-icons/fa"
 import SummaryCard from './components/SummaryCard.jsx'
 import TaskColumn from './components/TaskColumn.jsx'
 import Header from './components/Header.jsx'
@@ -12,24 +10,22 @@ import { TaskContext } from './contexts/TaskContext.jsx'
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
 function App() {
-  const { tasks } = useContext(TaskContext);
+  const { tasks, setTasks } = useContext(TaskContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [responseData, setResponseData] = useState();
   const [addTask, setAddTask] = useState(false);
   const [inProgressTasks, setInProgressTasks] = useState();
   const [timeoutTasks, setTimeoutTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
 
-
   useEffect(() => {
-    setInProgressTasks(tasks.filter((task) => task.status === "InProgress"));
+    setInProgressTasks(tasks.filter((task) => task.status === "Inprogress"));
     setTimeoutTasks(tasks.filter((task) => task.status === "Timeout"));
     setCompletedTasks(tasks.filter((task) => task.status === "Completed"));
     setLoading(false);
 
-  }, [tasks]);
+  }, [tasks, setTasks]);
 
   if (loading) {
     return (
@@ -79,7 +75,6 @@ function App() {
           />}
 
 
-
           {/* Columns */}
           <div className="flex-grow grid md:grid-cols-3  gap-5 lg:gap-10 md:ml-6">
 
@@ -106,32 +101,3 @@ function App() {
 }
 
 export default App
-
-
-
-
-
-
-
-
-
-// import React from "react";
-// import { TaskProvider } from "./contexts/TaskContext.jsx";
-// import TaskForm from "./components/TaskForm.jsx";
-// import TaskList from "./components/TaskList.jsx";
-
-// function App() {
-//   return (
-//     <TaskProvider>
-//       <div className="container mx-auto">
-//         <h1 className="text-2xl font-bold text-center my-5">
-//           Task Manager
-//         </h1>
-//         <TaskForm />
-//         <TaskList />
-//       </div>
-//     </TaskProvider>
-//   )
-// }
-
-// export default App;

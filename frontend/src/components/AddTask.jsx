@@ -4,17 +4,17 @@ import { useContext } from "react";
 import { TaskContext } from "../contexts/TaskContext.jsx";
 import { toast } from "react-toastify";
 
-export default function AddTask({ setAddTask }) {
+export default function AddTask({ currTask, setAddTask }) {
     // State to store task details
-    const { addTask } = useContext(TaskContext);
+    const { addTask, updateTask } = useContext(TaskContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const [task, setTask] = useState({
-        title: "",
-        description: "",
-        status: "",
-        priority: "",
-        dueDate: "",
+        title: currTask?.title || "",
+        description: currTask?.description || "",
+        status: currTask?.status || "",
+        priority: currTask?.priority || "",
+        dueDate: currTask?.dueDate || "",
     });
 
     // Handle input changes
@@ -37,31 +37,42 @@ export default function AddTask({ setAddTask }) {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Task Submitted:", task);
-        if (!task?.title) {
-            toast.error("Please enter a title");
-            return;
-        }
-        if (!task?.status || !task?.priority) {
-            toast.error("Please select a status and priority")
-            return;
-        }
+        if (currTask) {
+            console.log("Task Submitted:", task);
+            if (!task?.title) {
+                toast.error("Please enter a title");
+                return;
+            }
+            if (!task?.status || !task?.priority) {
+                toast.error("Please select a status and priority")
+                return;
+            }
 
-        addTask(task)
-        setTask({
-            title: "",
-            description: "",
-            status: "Status",
-            priority: "Priority",
-            dueDate: "",
-        })
+            updateTask(currTask._id, task)
+            
+            setAddTask(false)
+            
+        } else {
+            console.log("Task Submitted:", task);
+            if (!task?.title) {
+                toast.error("Please enter a title");
+                return;
+            }
+            if (!task?.status || !task?.priority) {
+                toast.error("Please select a status and priority")
+                return;
+            }
+            addTask(task)
+            
+            setAddTask(false)
+        }
     };
 
     return (
         <div className="fixed inset-0 flex justify-center items-center z-10">
             <div className="bg-gray-200 max-w-xs mx-auto mt-10 rounded-lg shadow-md border border-slate-400 text-gray-900 py-5 px-7">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-lg font-bold">ADD TASK</h2>
+                    <h2 className="text-lg font-bold">{currTask ? "EDIT TASK" : "ADD TASK"}</h2>
                     <button
                         onClick={() => setAddTask(false)}
                         className="text-slate-800 hover:text-gray-950 text-md hover:bg-gray-300 px-2 rounded-full"
@@ -112,7 +123,7 @@ export default function AddTask({ setAddTask }) {
                                 type="submit"
                                 className="text-white bg-green-400 hover:bg-green-500 px-3 py-1 rounded-lg text-sm shadow-md shadow-stone-400"
                             >
-                                Add Task
+                                {currTask ? "Edit Task" : "Add Task"}
                             </button>
                         </div>
                     </div>

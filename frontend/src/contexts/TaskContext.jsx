@@ -8,14 +8,15 @@ export const TaskContext = createContext();
 
 export function TaskProvider({ children }) {
     const [tasks, setTasks] = useState([]);
+    const [forceRender, setForceRender] = useState(0);
 
     useEffect(() => {
         fetchTasks();
     }, []);
 
     useEffect(() => {
-        console.log("Updated tasks:", tasks);  // This will log the correct updated tasks
-    }, [tasks]);
+        fetchTasks();
+    }, [forceRender]);
 
     const fetchTasks = async () => {
         try {
@@ -32,13 +33,10 @@ export function TaskProvider({ children }) {
     };
 
     const addTask = async (task) => {
-        console.log("Adding task");
         try {
-            console.log("1");
             const response = await axios.post(`${API_URL}/add-task`, task);
-            console.log("2");
             setTasks([...tasks, response.data]);
-            console.log("3");
+            setForceRender(prev => prev + 1);
             toast.success("Task added successfully");
         } catch (error) {
             toast.error("Failed to add task", error);
@@ -49,16 +47,20 @@ export function TaskProvider({ children }) {
         try {
             await axios.patch(`${API_URL}/update-task/${id}`, updatedTask);
             setTasks(tasks.map(task => task.id === id ? updatedTask : task));
+
+            setForceRender(prev => prev + 1);
             toast.success("Task updated successfully");
         } catch (error) {
             toast.error("Failed to update task");
         }
     };
+     
 
     const deleteTask = async (id) => {
         try {
             await axios.delete(`${API_URL}/delete-task/${id}`);
-            setTasks(tasks.filter(task => task.id !== id));
+            setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+            setForceRender(prev => prev + 1);
             toast.success("Task deleted successfully");
         } catch (error) {
             toast.error("Failed to delete task");

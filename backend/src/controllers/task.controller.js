@@ -13,7 +13,7 @@ const healthCheck = (req, res) => {
 
 const createTask = asyncHandler(async (req, res) => {
     const {title, description, status, priority, dueDate} = req.body;
-    const statusEnum = ["InProgress", "Completed", "Timeout"];
+    const statusEnum = ["Inprogress", "Completed", "Timeout"];
     const priorityEnum = ["Low", "High", "Medium"];
     if(!title){
         throw new ApiError(400, "Title is missing");

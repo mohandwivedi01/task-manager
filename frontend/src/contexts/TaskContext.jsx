@@ -13,22 +13,35 @@ export function TaskProvider({ children }) {
         fetchTasks();
     }, []);
 
+    useEffect(() => {
+        console.log("Updated tasks:", tasks);  // This will log the correct updated tasks
+    }, [tasks]);
+
     const fetchTasks = async () => {
         try {
-            const response = await axios.get(`${API_URL}/tasks`);
-            setTasks(response.data);
+            const response = await axios.get(`${API_URL}/get-all-tasks`);
+            // get-all-tasks
+            if (response.status === 200) {
+                setTasks(response.data.data);  // ✅ Make sure to use 'response.data.data'
+            } else {
+                toast.error("Error fetching tasks");
+            }
         } catch (error) {
-            toast.error("Failed to fetch tasks");
+            toast.error("Failed to fetch tasks 1");
         }
     };
 
     const addTask = async (task) => {
+        console.log("Adding task");
         try {
+            console.log("1");
             const response = await axios.post(`${API_URL}/add-task`, task);
+            console.log("2");
             setTasks([...tasks, response.data]);
+            console.log("3");
             toast.success("Task added successfully");
         } catch (error) {
-            toast.error("Failed to add task");
+            toast.error("Failed to add task", error);
         }
     };
 

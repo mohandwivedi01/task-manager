@@ -6,3 +6,9 @@
   padding: 0px;
   margin: 0px;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+
+  margin-left: -15px;
+}
+

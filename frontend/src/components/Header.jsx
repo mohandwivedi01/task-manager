@@ -4,14 +4,8 @@ import Options from "./Options";
 import { useId } from "react";
 import { TaskContext } from "../contexts/TaskContext.jsx";
 
-export default function Header(props) {
-    const [option, setOption] = useState("All");
-    const { filterTasks } = useContext(TaskContext);
-    console.log("filter option: ",option)
-    if(option !== "All"){
-        // filterTasks(option)
-    }
-    
+export default function Header({option, setOption}) {
+
     
     return (
         <header>

@@ -9,6 +9,7 @@ export const TaskContext = createContext();
 export function TaskProvider({ children }) {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchTasks();
@@ -23,6 +24,7 @@ export function TaskProvider({ children }) {
                 toast.error("Error fetching tasks");
             } 
         } catch (error) {
+            setError(error.response?.data?.message || "Something went wrong while fetching tasks")
             toast.error(error.response?.data?.message || "Something went wrong while fetching tasks");
         } finally {
             setLoading(false);
@@ -37,6 +39,7 @@ export function TaskProvider({ children }) {
             fetchTasks(); // Refresh tasks after adding
             toast.success("Task added successfully");
         } catch (error) {
+            setError(error.response?.data?.message || "Something went wrong while adding task.");
             toast.error(error.response?.data?.message || "Something went wrong while adding task.");
         }
     };
@@ -47,9 +50,10 @@ export function TaskProvider({ children }) {
             // setTasks(tasks.map(task => task.id === id ? updatedTask : task));
             setTasks(prevTasks => prevTasks.map(task => task._id === id ? updatedTask : task));
            
-            toast.success("Task updated successfully");
             fetchTasks(); // not needed as we're already doing it in the updateTask function.
+            toast.success("Task updated successfully");
         } catch (error) {
+            setError(error.response?.data?.message || "Something went wrong while updating task.");
             toast.error(error.response?.data?.message || "Something went wrong while updating task.");
         }
     };
@@ -60,20 +64,21 @@ export function TaskProvider({ children }) {
             await axios.delete(`${API_URL}/delete-task/${id}`);
             setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
             // setForceRender(prev => prev + 1);
-            toast.success("Task deleted successfully");
             fetchTasks(); // Refresh tasks after deletion
+            toast.success("Task deleted successfully");
         } catch (error) {
+            setError(error.response?.data?.message || "Something went wrong while deleting the task");
             toast.error(error.response?.data?.message || "Something went wrong while deleting the task");
         }
     };
 
     const filterTasks = (priority) => {
-        if (priority !== "all") return tasks
+        if (priority === "All") return tasks
         return tasks.filter(task => task.priority === priority);   
     }
 
     return (
-        <TaskContext.Provider value={{ tasks,  addTask, updateTask, deleteTask, filterTasks, loading }}>
+        <TaskContext.Provider value={{ tasks,  addTask, updateTask, deleteTask, filterTasks, loading, error }}>
             {children}
         </TaskContext.Provider>
     );

@@ -16,15 +16,24 @@ export function TaskProvider({ children }) {
     }, []);
 
     const fetchTasks = async () => {
+        setLoading(true);
+        setError(null);
+        let timedOut = false;
+
+        const timeout = setTimeout(() => {
+            timedOut = true;
+            toast.info("The server was asleep. It will take about 1 minute to restart. Please wait...");    
+        }, 10000);
         try {
             const response = await axios.get(`${API_URL}/get-all-tasks`);
+            clearTimeout(timeout);
             if (response.status === 200) {
                 setTasks(response.data.data); 
             } else {
+                setError(response?.data?.message);
                 toast.error("Error fetching tasks");
             } 
         } catch (error) {
-            setError(error.response?.data?.message || "Something went wrong while fetching tasks")
             toast.error(error.response?.data?.message || "Something went wrong while fetching tasks");
         } finally {
             setLoading(false);
@@ -34,7 +43,10 @@ export function TaskProvider({ children }) {
     const addTask = async (task) => {
         try {
             const response = await axios.post(`${API_URL}/add-task`, task);
-            // setTasks([...tasks, response.data]);  
+            if(task.status === "Status" || task.priority === "Priority"){
+                toast.error("please choose task priority and status");
+                return;
+            }  
             setTasks(prevTasks => [...prevTasks, response.data]); // updates should be done in a functional way. Because React schedules state updates asynchronously, and using the previous state ensures correctness.
             fetchTasks(); // Refresh tasks after adding
             toast.success("Task added successfully");
@@ -45,27 +57,43 @@ export function TaskProvider({ children }) {
     };
 
     const updateTask = async (id, updatedTask) => {
+        if(updatedTask.status === "Status"){
+            toast.error("please choose task status");
+            return;
+        }
+        if(updatedTask.priority === "Priority"){
+            toast.error("please choose task priority");
+            return;
+        }
         try {
-            await axios.patch(`${API_URL}/update-task/${id}`, updatedTask);
-            // setTasks(tasks.map(task => task.id === id ? updatedTask : task));
-            setTasks(prevTasks => prevTasks.map(task => task._id === id ? updatedTask : task));
-            toast.success("Task updated successfully");
+            const response = await axios.patch(`${API_URL}/update-task/${id}`, updatedTask);
+
+            if (response.status === 200) {
+                setTasks(prevTasks =>
+                    prevTasks.map(task =>
+                        task._id === id ? { ...task, ...updatedTask } : task // Merge old and updated task data
+                    )
+                );
+                toast.success("Task updated successfully");
+            } else {
+                toast.error(response?.data?.message || "Failed to update task.");
+            }
         } catch (error) {
-            setError(error.response?.data?.message || "Something went wrong while updating task.");
-            toast.error(error.response?.data?.message || "Something went wrong while updating task.");
+            toast.error(error.message || "Something went wrong while updating task.");
         }
     };
      
 
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`${API_URL}/delete-task/${id}`);
-            setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
-            // setForceRender(prev => prev + 1);
-            fetchTasks(); // Refresh tasks after deletion
-            toast.success("Task deleted successfully");
+            const response = await axios.delete(`${API_URL}/delete-task/${id}`);
+            if (response.status === 200) {
+                setTasks(prevTasks => prevTasks.filter(task => task._id !== id)); // Correct field `_id`
+                toast.success("Task deleted successfully");
+            } else {
+                toast.error(response?.data?.message || "Failed to delete task.");
+            }
         } catch (error) {
-            setError(error.response?.data?.message || "Something went wrong while deleting the task");
             toast.error(error.response?.data?.message || "Something went wrong while deleting the task");
         }
     };

@@ -10,7 +10,7 @@ import { TaskContext } from './contexts/TaskContext.jsx'
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
 function App() {
-  const { setTasks, loading, error, filterTasks  } = useContext(TaskContext);
+  const { loading, error, filterTasks  } = useContext(TaskContext);
   const [addTask, setAddTask] = useState(false);
   const [option, setOption] = useState("All");
   const [inProgressTasks, setInProgressTasks] = useState();
@@ -26,12 +26,9 @@ function App() {
 
   if (loading) {
     return (
-      <div className="h-screen flex justify-center items-center text-center">
+      <div className="h-screen flex justify-center items-center text-center animate-pulse">
         <div className='animate-spin text-2xl mr-4 mt-1'>✏️ </div>
-        <h1 className='text-slate-800 text-2xl '> Loading... </h1>
-        {setTimeout(() => {
-          return <div className='text-sm w-full'>This Application is hosted with free server so it takes 1-min to re-start the server for the first time</div>
-        }, 2000)}
+        <h1 className='text-slate-900 text-xl '>Loading... </h1>
       </div> 
     )
   }

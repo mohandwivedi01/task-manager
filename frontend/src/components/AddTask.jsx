@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 
 export default function AddTask({ currTask, setAddTask }) {
     // State to store task details
-    const { addTask, updateTask } = useContext(TaskContext);
-    const [loading, setLoading] = useState(true);
+    const { addTask, updateTask, loading } = useContext(TaskContext);
     const [error, setError] = useState();
     const [task, setTask] = useState({
         title: currTask?.title || "",
@@ -38,7 +37,7 @@ export default function AddTask({ currTask, setAddTask }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (currTask) {
-            console.log("Task Submitted:", task);
+            // console.log("Task Submitted:", task);
             if (!task?.title) {
                 toast.error("Please enter a title");
                 return;
@@ -53,7 +52,7 @@ export default function AddTask({ currTask, setAddTask }) {
             setAddTask(false)
             
         } else {
-            console.log("Task Submitted:", task);
+            // console.log("Task Submitted:", task);
             if (!task?.title) {
                 toast.error("Please enter a title");
                 return;
@@ -69,7 +68,7 @@ export default function AddTask({ currTask, setAddTask }) {
     };
 
     return (
-        <div className="fixed inset-0 flex justify-center items-center z-10">
+        <div className="fixed inset-0 flex justify-center items-center z-10 animate-fadeInUp">
             <div className="bg-gray-200 max-w-xs mx-auto mt-10 rounded-lg shadow-md border border-slate-400 text-gray-900 py-5 px-7">
                 <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">{currTask ? "EDIT TASK" : "ADD TASK"}</h2>
@@ -99,13 +98,13 @@ export default function AddTask({ currTask, setAddTask }) {
                         />
                         <div className="flex justify-between mt-2">
                             <Options1
-                                className="rounded-lg bg-gray-50 shadow-md shadow-stone-400"
+                                className="rounded-lg bg-gray-50 shadow-md shadow-stone-400 py-0.5"
                                 option={task.status}
                                 setOption={(value) => handleOptionChange("status", value)}
                                 options={["Status", "Inprogress", "Completed", "Timeout"]}
                             />
                             <Options1
-                                className=" rounded-lg bg-gray-50 shadow-md shadow-stone-400"
+                                className=" rounded-lg bg-gray-50 shadow-md shadow-stone-400 py-0.5"
                                 option={task.priority}
                                 setOption={(value) => handleOptionChange("priority", value)}
                                 options={["Priority", "Low", "Medium", "High"]}

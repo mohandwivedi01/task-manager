@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { FaEdit, FaEllipsisH, FaRegTrashAlt } from "react-icons/fa";
 import { TaskContext } from "../contexts/TaskContext.jsx";
 import AddTask from "./AddTask.jsx";
+import { motion }  from "framer-motion"
 
-const API_URL = import.meta.env.VITE_BACKEND_API;
 
 export default function TaskCard({ task }) {
     const [isEdit, setIsEdit] = useState(false);
@@ -36,7 +36,7 @@ export default function TaskCard({ task }) {
 
 
     return (
-        <div className="bg-white rounded-xl shadow-md shadow-stone-400 border-l-4 border-gray-300 py-4 px-4 relative">
+        <div className="bg-white rounded-xl shadow-md shadow-stone-400 p-4 relative animate-fadeInUp">
             <div className="flex justify-between items-center">
                 {/* Priority Label */}
                 <span className={`text-xs font-semibold px-2 py-1 rounded-md 

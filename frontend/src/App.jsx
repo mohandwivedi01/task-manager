@@ -10,8 +10,7 @@ import { TaskContext } from './contexts/TaskContext.jsx'
 const API_URL = import.meta.env.VITE_BACKEND_API;
 
 function App() {
-  const { tasks, setTasks } = useContext(TaskContext);
-  const [loading, setLoading] = useState(true);
+  const { tasks, setTasks, loading  } = useContext(TaskContext);
   const [error, setError] = useState(null);
   const [addTask, setAddTask] = useState(false);
   const [inProgressTasks, setInProgressTasks] = useState();
@@ -23,15 +22,20 @@ function App() {
     setInProgressTasks(tasks.filter((task) => task.status === "Inprogress"));
     setTimeoutTasks(tasks.filter((task) => task.status === "Timeout"));
     setCompletedTasks(tasks.filter((task) => task.status === "Completed"));
-    setLoading(false);
 
   }, [tasks, setTasks]);
 
+  console.log(loading)
   if (loading) {
     return (
       <div className="h-screen flex justify-center items-center text-center">
-        <h1 className='text-slate-800 text-2xl'>Loading...</h1>
-      </div>
+        <div className='animate-spin text-2xl mr-4'>✏️ </div>
+        <h1 className='text-slate-800 text-2xl '> Loading... </h1>
+        {setTimeout(() => {
+          console.log("pring......")
+          return <div className='text-sm w-full'>This Application is hosted with free server so it takes 1-min to re-start the server for the first time</div>
+        }, 2000)}
+      </div> 
     )
   }
   if (error) {

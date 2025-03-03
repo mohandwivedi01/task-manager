@@ -6,10 +6,10 @@ import { ToastContainer } from 'react-toastify'
 import { TaskProvider } from './contexts/TaskContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <TaskProvider>
       <App />
       <ToastContainer />
     </TaskProvider>
-  </StrictMode>,
+  // </StrictMode>
 )

@@ -6,7 +6,7 @@ import { TaskContext } from "../contexts/TaskContext.jsx";
 export default function TaskColumn({title, tasks}){
     
     return(
-        <div className="bg-[#ECEDEE] p-4 rounded-lg shadow-md shadow-stone-400 ">
+        <div className="bg-[#ECEDEE] p-4 rounded-lg shadow-md shadow-stone-400">
             <h3 className={`font-bold text-lg mb-4 flex items-center justify-center`}>
               <FaCircle className={`text-[8px] ${title === "Inprogress" ? "text-sky-500" : title === "Completed" ? "text-green-400" : "text-red-500"}`} />
               <span className="mx-2 text-gray-600 text-md">{title}</span>

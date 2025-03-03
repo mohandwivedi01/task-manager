@@ -136,8 +136,5 @@ Feel free to fork this repository and contribute! Open issues for suggestions an
 This project is licensed under the MIT License.
 
 ### 🚀 Enjoy Task Managing! ✨ 
-Thankyou😊 --> https://67c1e5fd40a024406def6cd6--stirring-buttercream-393f98.netlify.app/
-
-
-
+Thankyou😊 --> https://velvety-starburst-2c93e2.netlify.app/
 

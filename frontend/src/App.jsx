@@ -22,7 +22,7 @@ function App() {
     setTimeoutTasks(filterTasks(option).filter((task) => task.status === "Timeout"));
     setCompletedTasks(filterTasks(option).filter((task) => task.status === "Completed"));
 
-  }, [filterTasks, setTasks, option]);
+  }, [filterTasks, option]);
 
   if (loading) {
     return (

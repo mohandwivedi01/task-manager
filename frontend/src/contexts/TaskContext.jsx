@@ -49,8 +49,6 @@ export function TaskProvider({ children }) {
             await axios.patch(`${API_URL}/update-task/${id}`, updatedTask);
             // setTasks(tasks.map(task => task.id === id ? updatedTask : task));
             setTasks(prevTasks => prevTasks.map(task => task._id === id ? updatedTask : task));
-           
-            fetchTasks(); // not needed as we're already doing it in the updateTask function.
             toast.success("Task updated successfully");
         } catch (error) {
             setError(error.response?.data?.message || "Something went wrong while updating task.");
